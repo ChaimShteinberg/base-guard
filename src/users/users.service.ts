@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class UsersService {
-    private users = [
+    private users: User[] = [
         {
             userId: 1,
             username: "chaim",
@@ -17,7 +17,7 @@ export class UsersService {
         },
     ]
 
-    findOne(username: string): object | undefined {
+    findOne(username: string): User | undefined {
         return this.users.find(user => user.username === username);
     }
 }
