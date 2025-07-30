@@ -20,4 +20,14 @@ export class UsersService {
     findOne(username: string): User | undefined {
         return this.users.find(user => user.username === username);
     }
+
+    addUser(username: string, password: string): User {
+        this.users.push({
+            userId: this.users.length,
+            username: username,
+            password: password,
+            role: "soldier",
+        })
+        return this.users[this.users.length - 1]
+    }
 }
