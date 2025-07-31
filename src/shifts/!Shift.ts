@@ -1,5 +1,5 @@
-export class Shift{
-    id: number
-    assignmentId: number
-    soldierId: number
-}
+// export class Shift{
+//     id: number
+//     assignmentId: number
+//     soldierId: number
+// }

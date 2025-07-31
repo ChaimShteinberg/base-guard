@@ -1,4 +1,4 @@
-export class addDto{
-    assignmentId: number
-    soldierId: number
-}
+// export class addDto{
+//     assignmentId: number
+//     soldierId: number
+// }
