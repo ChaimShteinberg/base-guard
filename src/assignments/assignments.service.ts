@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from "@nestjs/sequelize";
 import { Assignments } from "./assignments.entity";
-// import { Assignment } from './IAssignments';
 
 @Injectable()
 export class AssignmentsService {
@@ -18,11 +17,7 @@ export class AssignmentsService {
         return await this.assignmentsModel.findOne({ where: { assignmentId: id } })
     };
 
-    //     addAssignments(assignment: string): void {
-    //         const newAssignment: Assignment = {
-    //             id: this.assignments[this.assignments.length - 1].id + 1,
-    //             assignment: assignment
-    //         }
-    //         this.assignments.push(newAssignment)
-    //     }
+    async CreateAssignments(assignment: string): Promise<void> {
+        await this.assignmentsModel.create({ assignment })
+    }
 }
