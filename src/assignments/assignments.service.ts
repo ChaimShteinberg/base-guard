@@ -9,24 +9,14 @@ export class AssignmentsService {
         @InjectModel(Assignments)
         private assignmentsModel: typeof Assignments
     ) { }
-    //     private assignments: Assignment[] = [
-    //         {
-    //             id: 1,
-    //             assignment: "assignment1"
-    //         },
-    //         {
-    //             id: 2,
-    //             assignment: "assignment2"
-    //         }
-    //     ];
 
     async findAllAssignments(): Promise<Assignments[]> {
         return await this.assignmentsModel.findAll()
     }
 
-    //     findOne(id: number): Assignment | undefined {
-    //         return this.assignments.find(assignment => assignment.id === id);
-    //     };
+    async findAssignmentById(id: number): Promise<Assignments | null> {
+        return await this.assignmentsModel.findOne({ where: { assignmentId: id } })
+    };
 
     //     addAssignments(assignment: string): void {
     //         const newAssignment: Assignment = {
