@@ -16,7 +16,7 @@ export class AuthService {
     async signUp(username: string, pass: string): Promise<Token> {
         const hashPass = await bcrypt.hash(pass, 12)
         const user: Users = await this.usersService.addUser(username, hashPass)
-        const token: Token = this.jwtService.sign({userId: user.id, role: user.role})
+        const token: Token = this.jwtService.sign({userId: user.userId, role: user.role})
         return token
     }
 
@@ -30,7 +30,7 @@ export class AuthService {
         if (!match) {
             throw new Error("Invalid password")
         }
-        const token: Token = this.jwtService.sign({userId: user.id, role})
+        const token: Token = this.jwtService.sign({userId: user.userId, role})
         return token
     }
 }

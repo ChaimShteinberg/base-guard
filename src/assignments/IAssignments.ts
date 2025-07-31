@@ -1,4 +1,4 @@
-export class Assignment{
-    id: number
-    assignment: string
-}
+// export class Assignment{
+//     id: number
+//     assignment: string
+// }
