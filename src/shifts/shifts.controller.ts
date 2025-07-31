@@ -5,16 +5,20 @@
 // import { RolesGuard } from 'src/common/guards/roles.guard';
 // import { Roles } from 'src/common/guards/roles.decorator';
 
-// @Controller('shifts')
-// @UseGuards(RolesGuard)
-// export class ShiftsController {
-//     constructor(private shiftsService: ShiftsService) { }
+import { Controller, Get } from "@nestjs/common";
+import { ShiftsService } from "./shifts.service";
+import { Shifts } from "./entities/shifts.entity";
 
-//     @Get()
+@Controller('shifts')
+// @UseGuards(RolesGuard)
+export class ShiftsController {
+    constructor(private shiftsService: ShiftsService) { }
+
+    @Get()
 //     @Roles('commander', 'soldier')
-//     getShifts(): Shift[] {
-//         return this.shiftsService.getAll();
-//     }
+    async getAllShifts(): Promise<Shifts[]> {
+        return await this.shiftsService.findAllShifts();
+    }
 
 //     @Get(':id')
 //     @Roles('commander', 'soldier')
@@ -31,4 +35,4 @@
 //     addShift(@Body() shift: addDto): void {
 //         this.shiftsService.addShift(shift.assignmentId, shift.soldierId)
 //     }
-// }
+}

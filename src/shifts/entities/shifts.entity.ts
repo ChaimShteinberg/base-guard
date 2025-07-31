@@ -20,10 +20,8 @@ export class Shifts extends Model {
     end_time: Date;
 
     @BelongsToMany(() => Users, () => ShiftSoldiers)
-    @Column
     soldiersId: Users[];
 
     @BelongsToMany(() => Assignments, () => ShiftAssignments)
-    @Column
     assignments: Assignments[];
 }
