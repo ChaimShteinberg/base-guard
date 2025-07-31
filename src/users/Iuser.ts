@@ -1,7 +1,7 @@
 class User {
     userId: number
     username: string
-    password: string
+    hashPassword: string
     role: Role
 }
 

@@ -6,9 +6,20 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
 import { AssignmentsModule } from './assignments/assignments.module';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { Users } from './users/users.entity';
 
 @Module({
-  imports: [ConfigModule.forRoot({
+  imports: [SequelizeModule.forRoot({
+    dialect: 'mysql', 
+    host: 'localhost', 
+    port: 3306, 
+    username: "root", 
+    password: "",
+    database: "base-guard", 
+    models: [Users]
+  }),
+    ConfigModule.forRoot({
     isGlobal: true,
   }),
     UsersModule,

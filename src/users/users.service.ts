@@ -1,18 +1,21 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Users } from './users.entity';
 
 @Injectable()
 export class UsersService {
+    constructor(@InjectModel(Users) private userModel: typeof Users){}
     private users: User[] = [
         {
             userId: 1,
             username: "chaim",
-            password: "123456",
+            hashPassword: "123456",
             role: "commander",
         },
         {
             userId: 2,
             username: "mendy",
-            password: "123456",
+            hashPassword: "123456",
             role: "soldier",
         },
     ]
@@ -21,13 +24,15 @@ export class UsersService {
         return this.users.find(user => user.username === username);
     }
 
-    addUser(username: string, password: string): User {
+    async addUser(username: string, hashPass: string): Promise<User> {
         this.users.push({
             userId: this.users.length,
             username: username,
-            password: password,
+            hashPassword: hashPass,
             role: "soldier",
         })
+        const user: User = await this.userModel.create({username, hashPass})
+        return user
         return this.users[this.users.length - 1]
     }
 }

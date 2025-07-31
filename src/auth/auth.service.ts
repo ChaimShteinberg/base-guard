@@ -14,7 +14,7 @@ export class AuthService {
 
     async signUp(username: string, pass: string): Promise<Token> {
         const hashPass = await bcrypt.hash(pass, 12)
-        const user: User = this.usersService.addUser(username, hashPass)
+        const user: User = await this.usersService.addUser(username, hashPass)
         const token: Token = this.jwtService.sign({username: user.username, role: user.role})
         return token
     }
@@ -24,8 +24,8 @@ export class AuthService {
         if (!user) {
             throw new Error("user not found")
         }
-        const { password, role } = user
-        const match = await bcrypt.compare(pass, password)
+        const { hashPassword, role } = user
+        const match = await bcrypt.compare(pass, hashPassword)
         if (!match) {
             throw new Error("Invalid password")
         }
