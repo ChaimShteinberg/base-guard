@@ -1,4 +1,4 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, Model, Table } from "sequelize-typescript";
 import { role } from "./enum/role.enum";
 
 @Table
@@ -9,7 +9,9 @@ export class Users extends Model {
     }))
     userId: number;
 
-    @Column
+    @Column({
+        unique: true
+    })
     username: string;
 
     @Column
