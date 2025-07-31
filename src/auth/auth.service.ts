@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from "bcrypt";
+import { Users } from 'src/users/users.entity';
 
 type Token = string
 
@@ -14,8 +15,8 @@ export class AuthService {
 
     async signUp(username: string, pass: string): Promise<Token> {
         const hashPass = await bcrypt.hash(pass, 12)
-        const user: User = await this.usersService.addUser(username, hashPass)
-        const token: Token = this.jwtService.sign({username: user.username, role: user.role})
+        const user: Users = await this.usersService.addUser(username, hashPass)
+        const token: Token = this.jwtService.sign({userId: user.userId, role: user.role})
         return token
     }
 
@@ -29,7 +30,7 @@ export class AuthService {
         if (!match) {
             throw new Error("Invalid password")
         }
-        const token: Token = this.jwtService.sign({username, role})
+        const token: Token = this.jwtService.sign({userId: user.userId, role})
         return token
     }
 }

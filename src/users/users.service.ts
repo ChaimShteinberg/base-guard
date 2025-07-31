@@ -10,8 +10,10 @@ export class UsersService {
         return await this.userModel.findOne({where: {username}});
     }
 
-    async addUser(username: string, hashPassword: string): Promise<User> {
-        const user: User = await this.userModel.create({username, hashPassword})
+    async addUser(username: string, hashPassword: string): Promise<Users> {
+        console.log(username, hashPassword)
+        const user: Users = await this.userModel.create({username, hashPassword})
+        console.log(user)
         return user
     }
 }
