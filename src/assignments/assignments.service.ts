@@ -1,8 +1,14 @@
-// import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from "@nestjs/sequelize";
+import { Assignments } from "./assignments.entity";
 // import { Assignment } from './IAssignments';
 
-// @Injectable()
-// export class AssignmentsService {
+@Injectable()
+export class AssignmentsService {
+    constructor(
+        @InjectModel(Assignments)
+        private assignmentsModel: typeof Assignments
+    ) {}
 //     private assignments: Assignment[] = [
 //         {
 //             id: 1,
@@ -14,9 +20,9 @@
 //         }
 //     ];
 
-//     getAll(): Assignment[] {
-//         return this.assignments;
-//     }
+    async findAllAssignments(): Promise<Assignments[]> {
+        return await this.assignmentsModel.findAll()
+    }
 
 //     findOne(id: number): Assignment | undefined {
 //         return this.assignments.find(assignment => assignment.id === id);
@@ -29,4 +35,4 @@
 //         }
 //         this.assignments.push(newAssignment)
 //     }
-// }
+}
