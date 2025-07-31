@@ -1,4 +1,4 @@
-import { Controller, Get } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
 import { AssignmentsService } from "./assignments.service";
 import { Assignments } from "./assignments.entity";
 
@@ -14,14 +14,14 @@ export class AssignmentsController {
         return await this.assignmentsService.findAllAssignments();
     }
 
-    //     @Get(':id')
-    //     findOne(@Param('id') id: string): Assignment | Error {
-    //         const assignment = this.assignmentsService.findOne(Number(id));
-    //         if (!assignment) {
-    //             throw new Error("assignment not found");
-    //         }
-    //         return assignment;
-    //     }
+    @Get(':id')
+    async getAssignmentById(@Param('id') id: string): Promise<Assignments | Error> {
+        const assignment = await this.assignmentsService.findAssignmentById(Number(id));
+        if (!assignment) {
+            throw new Error("assignment not found");
+        }
+        return assignment;
+    }
 
     //     @Post()
     //     addAssignments(@Body() assignment: addDto): void {
