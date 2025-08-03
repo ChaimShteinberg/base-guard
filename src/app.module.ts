@@ -9,6 +9,9 @@ import { AssignmentsModule } from './assignments/assignments.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Users } from './users/users.entity';
 import { Assignments } from './assignments/assignments.entity';
+import { Shifts } from './shifts/entities/shifts.entity';
+import { ShiftSoldiers } from './shifts/entities/shift-soldiers.entity';
+import { ShiftAssignments } from './shifts/entities/shift-assignments.entity';
 
 @Module({
   imports: [SequelizeModule.forRoot({
@@ -18,7 +21,7 @@ import { Assignments } from './assignments/assignments.entity';
     username: "root", 
     password: "",
     database: "base-guard", 
-    models: [Users, Assignments]
+    models: [Users, Assignments, Shifts, ShiftSoldiers, ShiftAssignments]
   }),
     ConfigModule.forRoot({
     isGlobal: true,

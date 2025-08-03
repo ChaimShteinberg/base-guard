@@ -11,9 +11,7 @@ export class UsersService {
     }
 
     async addUser(username: string, hashPassword: string): Promise<Users> {
-        console.log(username, hashPassword)
         const user: Users = await this.userModel.create({username, hashPassword})
-        console.log(user)
         return user
     }
 }

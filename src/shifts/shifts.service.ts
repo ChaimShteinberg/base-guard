@@ -1,30 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { Shift } from './!Shift';
+import { Shifts } from './entities/shifts.entity';
+import { InjectModel } from '@nestjs/sequelize';
 
 @Injectable()
 export class ShiftsService {
-    private shifts: Shift[] = [
-        {
-            id: 1,
-            assignmentId: 1,
-            soldierId: 2
-        }
-    ];
+    constructor(@InjectModel(Shifts)
+    private shiftsModel: typeof Shifts
+    ) { }
 
-    getAll(): Shift[] {
-        return this.shifts;
+    async findAllShifts(): Promise<Shifts[]> {
+        return await this.shiftsModel.findAll();
     }
 
-    findOne(id: number): Shift | undefined {
-        return this.shifts.find(shift => shift.id === id);
-    };
+    //     findOne(id: number): Shift | undefined {
+    //         return this.shifts.find(shift => shift.id === id);
+    //     };
 
-    addShift(assignmentId: number, soldierId: number): void {
-        const newShift: Shift = {
-            id: this.shifts[this.shifts.length - 1].id + 1,
-            assignmentId, 
-            soldierId,
-        }
-        this.shifts.push(newShift)
+    async createShift(
+        start_time: Date,
+        end_time: Date,
+        soldiersId: number[],
+        assignmentsId: number[]
+    ): Promise<void> {
+        const shift = await this.shiftsModel.create({
+            start_time,
+            end_time,
+        })
+
+        await shift.$set('soldiers', soldiersId);
+        await shift.$set('assignments', assignmentsId)
     }
 }
