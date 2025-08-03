@@ -1,17 +1,15 @@
-import { Column, Model, Table } from "sequelize-typescript";
+import { AutoIncrement, Column, Model, PrimaryKey, Table, Unique } from "sequelize-typescript";
 import { role } from "./enum/role.enum";
 
 @Table
 export class Users extends Model {
-    @Column(({
-        primaryKey: true, 
-        autoIncrement: true,
-    }))
+    @PrimaryKey
+    @AutoIncrement
+    @Column
     userId: number;
 
-    @Column({
-        unique: true
-    })
+    @Unique
+    @Column
     username: string;
 
     @Column
