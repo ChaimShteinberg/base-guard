@@ -31,6 +31,7 @@ export class RolesGuard implements CanActivate {
       throw new Error(error)
     }
     const role = request.user.role 
+    console.log(role)
     const hasRole = roles.includes(role)
     if (!hasRole)
       throw new Error("Access denied: insufficient permissions")

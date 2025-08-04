@@ -1,20 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { Shifts } from './entities/shifts.entity';
 import { InjectModel } from '@nestjs/sequelize';
+import { Users } from 'src/users/users.entity';
+import { Assignments } from 'src/assignments/assignments.entity';
 
 @Injectable()
 export class ShiftsService {
-    constructor(@InjectModel(Shifts)
-    private shiftsModel: typeof Shifts
+    constructor(
+        @InjectModel(Shifts)
+        private shiftsModel: typeof Shifts,
     ) { }
 
     async findAllShifts(): Promise<Shifts[]> {
         return await this.shiftsModel.findAll();
     }
 
-    //     findOne(id: number): Shift | undefined {
-    //         return this.shifts.find(shift => shift.id === id);
-    //     };
+    async getMyShifts(userId: number): Promise<Shifts[] | Error> {
+        const shifts = await this.shiftsModel.findAll({
+            include: [
+                {
+                    model: Users,
+                    where: { userId },
+                    through: { attributes: [] },
+                    attributes: [],
+                },
+                {
+                    model: Assignments,
+                    through: { attributes: [] },
+                },
+            ],
+        });
+        if (!shifts) {
+            throw new Error("shifts not found")
+        }
+        return shifts
+    };
 
     async createShift(
         start_time: Date,
