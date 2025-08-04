@@ -1,0 +1,39 @@
+CREATE TABLE users (
+    userId INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    hashPassword VARCHAR(255) NOT NULL,
+    role ENUM('soldier', 'commander') DEFAULT 'soldier',
+    createdAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    updatedAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
+);
+
+CREATE TABLE assignments (
+    assignmentId INT AUTO_INCREMENT PRIMARY KEY,
+    assignment TEXT,
+    createdAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    updatedAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
+);
+
+CREATE TABLE shifts (
+    shiftId INT AUTO_INCREMENT PRIMARY KEY,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    createdAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    updatedAt DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3)
+);
+
+CREATE TABLE ShiftSoldiers (
+    shiftId INT NOT NULL,
+    soldierId INT NOT NULL,
+    PRIMARY KEY (shiftId, soldierId),
+    FOREIGN KEY (shiftId) REFERENCES shifts(shiftId) ON DELETE CASCADE,
+    FOREIGN KEY (soldierId) REFERENCES users(userId) ON DELETE CASCADE
+);
+
+CREATE TABLE ShiftAssignments (
+    shiftId INT NOT NULL,
+    assignmentId INT NOT NULL,
+    PRIMARY KEY (shiftId, assignmentId),
+    FOREIGN KEY (shiftId) REFERENCES shifts(shiftId) ON DELETE CASCADE,
+    FOREIGN KEY (assignmentId) REFERENCES assignments(assignmentId) ON DELETE CASCADE
+);

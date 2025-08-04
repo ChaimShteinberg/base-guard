@@ -1,32 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { Assignment } from './IAssignments';
+import { InjectModel } from "@nestjs/sequelize";
+import { Assignments } from "./assignments.entity";
 
 @Injectable()
 export class AssignmentsService {
-    private assignments: Assignment[] = [
-        {
-            id: 1,
-            assignment: "assignment1"
-        },
-        {
-            id: 2,
-            assignment: "assignment2"
-        }
-    ];
+    constructor(
+        @InjectModel(Assignments)
+        private assignmentsModel: typeof Assignments
+    ) { }
 
-    getAll(): Assignment[] {
-        return this.assignments;
+    async findAllAssignments(): Promise<Assignments[]> {
+        return await this.assignmentsModel.findAll()
     }
 
-    findOne(id: number): Assignment | undefined {
-        return this.assignments.find(assignment => assignment.id === id);
+    async findAssignmentById(id: number): Promise<Assignments | null> {
+        return await this.assignmentsModel.findOne({ where: { assignmentId: id } })
     };
 
-    addAssignments(assignment: string): void {
-        const newAssignment: Assignment = {
-            id: this.assignments[this.assignments.length - 1].id + 1,
-            assignment: assignment
-        }
-        this.assignments.push(newAssignment)
+    async CreateAssignments(assignment: string): Promise<void> {
+        await this.assignmentsModel.create({ assignment })
     }
 }

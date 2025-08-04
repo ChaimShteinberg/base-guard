@@ -6,9 +6,15 @@ import { SignDto } from './sign.dto';
 export class AuthController {
     constructor(private authService: AuthService) { }
 
+    @Post("signup")
+    signUp(@Body() user_pass: SignDto) {
+        const { username, password } = user_pass;
+        return this.authService.signUp(username, password)
+    }
+
     @Post("signin")
-    signIn(@Body() user_pass: SignDto) {
-        const {username, password} = user_pass;
-        return this.authService.signIn(username, password)
+    async signIn(@Body() user_pass: SignDto) {
+        const { username, password } = user_pass;
+        return await this.authService.signIn(username, password)
     }
 }

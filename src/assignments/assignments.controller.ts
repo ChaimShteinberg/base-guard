@@ -1,19 +1,24 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { Assignment } from './IAssignments';
-import { AssignmentsService } from './assignments.service';
-import { addDto } from './add.dto';
+import { Body, Controller, Get, Param, Post, UseGuards } from "@nestjs/common";
+import { AssignmentsService } from "./assignments.service";
+import { Assignments } from "./assignments.entity";
+import { createAssignmentsDto } from "./createAssignments.dto";
+import { Roles } from "src/common/guards/roles.decorator";
+import { RolesGuard } from "src/common/guards/roles.guard";
 
 @Controller('assignments')
+@UseGuards(RolesGuard)
 export class AssignmentsController {
-    constructor(private assignmentsService: AssignmentsService) { }
+    constructor(private readonly assignmentsService: AssignmentsService) { }
     @Get()
-    getAssignments(): Assignment[] {
-        return this.assignmentsService.getAll();
+    @Roles("commander")
+    async getAllAssignments(): Promise<Assignments[]> {
+        return await this.assignmentsService.findAllAssignments();
     }
 
     @Get(':id')
-    findOne(@Param('id') id: string): Assignment | Error {
-        const assignment = this.assignmentsService.findOne(Number(id));
+    @Roles("commander")
+    async getAssignmentById(@Param('id') id: string): Promise<Assignments | Error> {
+        const assignment = await this.assignmentsService.findAssignmentById(Number(id));
         if (!assignment) {
             throw new Error("assignment not found");
         }
@@ -21,7 +26,8 @@ export class AssignmentsController {
     }
 
     @Post()
-    addAssignments(@Body() assignment: addDto): void {
-        this.assignmentsService.addAssignments(assignment.assignment)
+    @Roles("commander")
+    async createAssignments(@Body() assignment: createAssignmentsDto): Promise<void> {
+        await this.assignmentsService.CreateAssignments(assignment.assignment)
     }
 }
